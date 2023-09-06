@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Testing your installation - HappyPose</title>
+        <title>Introduction - HappyPose</title>
 
 
         <!-- Custom HTML head -->
@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded "><a href="test-install.html" class="active"><strong aria-hidden="true">1.</strong> Testing your installation</a></li><li class="chapter-item expanded "><a href="download-data.html"><strong aria-hidden="true">2.</strong> Downloading and preparing the data</a></li><li class="chapter-item expanded "><a href="evaluate-cosypose.html"><strong aria-hidden="true">3.</strong> Evaluate CosyPose</a></li><li class="chapter-item expanded "><a href="train-cosypose.html"><strong aria-hidden="true">4.</strong> Train CosyPose</a></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded "><a href="../../index.html" class="active"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">CosyPose</li><li class="chapter-item expanded "><a href="cosypose/test-install.html"><strong aria-hidden="true">2.</strong> Testing your installation</a></li><li class="chapter-item expanded "><a href="cosypose/download-data.html"><strong aria-hidden="true">3.</strong> Downloading and preparing the data</a></li><li class="chapter-item expanded "><a href="cosypose/evaluate.html"><strong aria-hidden="true">4.</strong> Evaluate CosyPose</a></li><li class="chapter-item expanded "><a href="cosypose/train.html"><strong aria-hidden="true">5.</strong> Train CosyPose</a></li><li class="chapter-item expanded affix "><li class="part-title">MegaPose</li><li class="chapter-item expanded "><a href="megapose/todo.html"><strong aria-hidden="true">6.</strong> TODO</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -166,37 +166,30 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="testing-your-installation"><a class="header" href="#testing-your-installation">Testing your installation</a></h1>
-<h2 id="0-create-data-directory"><a class="header" href="#0-create-data-directory">0. Create data directory</a></h2>
-<pre><code>Create data dir /somewhere/convenient. The dataset to store are quite large.
-export MEGAPOSE_DATA_DIR=/somewhere/convenient
-cd $MEGAPOSE_DATA_DIR
-wget https://memmo-data.laas.fr/static/examples.tar.xz
-tar xf examples.tar.xz
+                        <h1 id="happypose"><a class="header" href="#happypose">HappyPose</a></h1>
+<p><a href="https://github.com/agimus-project/happypose/actions/workflows/test.yml"><img src="https://github.com/agimus-project/happypose/actions/workflows/test.yml/badge.svg" alt="Tests" /></a>
+<a href="https://github.com/agimus-project/happypose/actions/workflows/packaging.yml"><img src="https://github.com/agimus-project/happypose/actions/workflows/packaging.yml/badge.svg" alt="Packaging" /></a>
+<a href="https://results.pre-commit.ci/latest/github/agimus-project/happypose/main"><img src="https://results.pre-commit.ci/badge/github/agimus-project/happypose/main.svg" alt="pre-commit.ci status" /></a>
+<a href="https://happypose.readthedocs.io/en/latest/?badge=latest"><img src="https://readthedocs.org/projects/happypose/badge/?version=latest" alt="Documentation Status" /></a>
+<a href="https://codecov.io/gh/agimus-project/happypose"><img src="https://codecov.io/gh/agimus-project/happypose/branch/main/graph/badge.svg?token=TODO" alt="codecov" /></a>
+<a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black" /></a></p>
+<p>Toolbox and trackers for object pose-estimation. Based on the work <a href="https://github.com/Simple-Robotics/cosypose">CosyPose</a> and <a href="https://github.com/megapose6d/megapose6d">MegaPose</a>. This directory is currently under development.</p>
+<h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
+<p>This installation procedure will be curated.</p>
+<pre><code>git clone --branch dev --recurse-submodules https://github.com/agimus-project/happypose.git
+cd happypose
+conda env create -f environment.yml
+conda activate happypose
+cd happypose/pose_estimators/cosypose
+pip install .
+cd ../../..
+pip install -e .
 </code></pre>
-<h2 id="1-download-pre-trained-pose-estimation-models"><a class="header" href="#1-download-pre-trained-pose-estimation-models">1. Download pre-trained pose estimation models</a></h2>
-<h3 id="megapose"><a class="header" href="#megapose">Megapose</a></h3>
-<p>Download pose estimation models to $MEGAPOSE_DATA_DIR/megapose-models:</p>
-<pre><code>python -m happypose.toolbox.utils.download --megapose_models
-</code></pre>
-<h3 id="cosypose"><a class="header" href="#cosypose">Cosypose</a></h3>
-<pre><code class="language-sh"> #ycbv
-  python -m happypose.toolbox.utils.download --cosypose_model=detector-bop-ycbv-pbr--970850
-  python -m happypose.toolbox.utils.download --cosypose_model=coarse-bop-ycbv-pbr--724183
-  python -m happypose.toolbox.utils.download --cosypose_model=refiner-bop-ycbv-pbr--604090
-
- #tless
-  python -m happypose.toolbox.utils.download --cosypose_model=detector-bop-tless-pbr--873074
-  python -m happypose.toolbox.utils.download --cosypose_model=coarse-bop-tless-pbr--506801
-  python -m happypose.toolbox.utils.download --cosypose_model=refiner-bop-tless-pbr--233420
-</code></pre>
-<h2 id="2-run-examples"><a class="header" href="#2-run-examples">2. Run examples</a></h2>
-<h3 id="megapose-1"><a class="header" href="#megapose-1">Megapose</a></h3>
-<pre><code>python -m happypose.pose_estimators.megapose.src.megapose.scripts.run_inference_on_example barbecue-sauce --run-inference --vis-outputs
-</code></pre>
-<h3 id="cosypose-1"><a class="header" href="#cosypose-1">CosyPose</a></h3>
-<p>You need to download the ycbv dataset to run this example. Please see the download section.</p>
-<pre><code>python -m happypose.pose_estimators.cosypose.cosypose.scripts.run_inference_on_example crackers --run-inference
+<p>Installation of bop_toolkit :</p>
+<pre><code>conda activate happypose
+cd happypose/pose_estimators/megapose/deps/bop_toolkit_challenge/
+# Remove all versions enforcing on requirements.txt
+pip install -r requirements.txt -e .
 </code></pre>
 
                     </main>
@@ -204,7 +197,7 @@ tar xf examples.tar.xz
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
 
-                            <a rel="next" href="download-data.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="cosypose/test-install.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -215,7 +208,7 @@ tar xf examples.tar.xz
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
 
-                    <a rel="next" href="download-data.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="cosypose/test-install.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

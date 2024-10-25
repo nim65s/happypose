@@ -14,7 +14,7 @@ limitations under the License.
 """
 
 # Standard Library
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Callable, Optional, Tuple
 
 # Third Party
@@ -39,6 +39,10 @@ Resolution = Tuple[int, int]  # width, height
 TCCGL = Transform(
     np.array([[1, 0, 0, 0], [0, 0, -1, 0], [0, 1, 0, 0], [0, 0, 0, 1]], dtype=float),
 )
+
+
+def default_transform() -> Transform:
+    return Transform((0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0))
 
 
 @dataclass
@@ -92,7 +96,7 @@ class CameraRenderingData:
 class Panda3dCameraData:
     K: np.ndarray
     resolution: Tuple[int, int]
-    TWC: Transform = Transform((0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0))  # noqa: RUF009
+    TWC: Transform = field(default_factory=default_transform)
     z_near: float = 0.1
     z_far: float = 10
     node_name: str = "camera"
@@ -153,7 +157,7 @@ class Panda3dLightData:
 @dataclass
 class Panda3dObjectData:
     label: str
-    TWO: Transform = Transform((0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0))  # noqa: RUF009
+    TWO: Transform = field(default_factory=default_transform)
     color: Optional[RgbaColor] = None
     material: Optional[p3d.core.Material] = None
     remove_mesh_material: bool = False

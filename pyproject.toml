@@ -106,7 +106,7 @@ priority = "primary"
 changelog = "https://github.com/agimus-project/happypose/blob/main/CHANGELOG.md"
 
 [tool.ruff]
-extend-exclude = ["deps", "*.ipynb"]
+extend-exclude = ["*.ipynb", "deps"]
 target-version = "py310"
 
 [tool.ruff.lint]

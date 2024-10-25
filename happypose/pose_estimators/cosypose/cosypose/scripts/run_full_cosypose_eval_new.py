@@ -10,7 +10,7 @@ from omegaconf import OmegaConf
 from happypose.pose_estimators.cosypose.cosypose.evaluation.evaluation import run_eval
 
 # MegaPose
-from happypose.pose_estimators.megapose.bop_config import PBR_DETECTORS
+from happypose.pose_estimators.megapose.bop_config import PBR_DETECTORS, SYNT_REAL_DETECTORS
 from happypose.pose_estimators.megapose.config import (
     DEBUG_RESULTS_DIR,
     MODELNET_TEST_CATEGORIES,
@@ -80,10 +80,12 @@ def create_eval_cfg(
         ds_name_root = cfg.ds_name.split(".")[0]
         if cfg.detector_run_id == "bop_pbr":
             cfg.detector_run_id = PBR_DETECTORS[ds_name_root]
+        elif cfg.detector_run_id == "bop_synt_real":
+            cfg.detector_run_id = SYNT_REAL_DETECTORS[ds_name_root]
     elif detection_type == "gt":
         pass
     else:
-        msg = f"Unknown detector type {cfg.detector_type}"
+        msg = f"Unknown detector type {detection_type}"
         raise ValueError(msg)
 
     name = generate_save_key(detection_type, "cosycoarse")

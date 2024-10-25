@@ -1,7 +1,7 @@
 import os
-import numpy as np
-import pytest 
 
+import numpy as np
+import pytest
 from omegaconf import OmegaConf
 
 from happypose.pose_estimators.cosypose.cosypose.utils.distributed import (
@@ -10,22 +10,21 @@ from happypose.pose_estimators.cosypose.cosypose.utils.distributed import (
     reduce_dict,
     sync_model,
 )
-
-from happypose.toolbox.utils.logging import get_logger, set_logging_level
+from happypose.toolbox.utils.logging import get_logger
 
 logger = get_logger(__name__)
 
 class TestCosyposePoseTraining():
-    
+
     @pytest.fixture(autouse=True)
     def setup(self):
-    
+
         args = {
             'config':'ycbv-refiner-syntonly'
         }
-        
+
         cfg_pose = OmegaConf.create({})
-        
+
         logger.info(
             f"Training with config: {args['config']}",
         )
@@ -205,22 +204,20 @@ class TestCosyposePoseTraining():
         N_GPUS = int(os.environ.get("N_PROCS", 1))
         cfg_pose.epoch_size = cfg_pose.epoch_size // N_GPUS
         self.cfg_pose = cfg_pose
-        
+
     @pytest.mark.skip(reason="Currently, run two training tests (i.e. detector and pose) consecutively doesn't work with torch distributed")
     def test_pose_training(self):
         if torch.cuda.is_available():
             train_pose(self.cfg_pose)
         else:
             pytest.skip("Training is not tested without GPU")
- 
- 
- 
+
+
+
 import functools
 import time
 from collections import defaultdict
-from pathlib import Path
 
-import simplejson as json
 import torch
 import torch.distributed as dist
 import yaml
@@ -230,10 +227,18 @@ from torchnet.meter import AverageValueMeter
 from tqdm import tqdm
 
 from happypose.pose_estimators.cosypose.cosypose.config import EXP_DIR
-
-
+from happypose.pose_estimators.cosypose.cosypose.training.pose_forward_loss import (
+    h_pose,
+)
+from happypose.pose_estimators.cosypose.cosypose.training.pose_models_cfg import (
+    check_update_config,
+    create_pose_model_cosypose,
+)
+from happypose.pose_estimators.cosypose.cosypose.training.train_pose import (
+    make_eval_bundle,
+    run_eval,
+)
 from happypose.pose_estimators.cosypose.cosypose.utils.logging import get_logger
-
 from happypose.toolbox.datasets.datasets_cfg import (
     make_object_dataset,
     make_scene_dataset,
@@ -250,11 +255,6 @@ from happypose.toolbox.utils.resources import (
     get_gpu_memory,
     get_total_memory,
 )
-
-from happypose.pose_estimators.cosypose.cosypose.training.pose_forward_loss import h_pose
-from happypose.pose_estimators.cosypose.cosypose.training.pose_models_cfg import check_update_config, create_pose_model_cosypose
-
-from happypose.pose_estimators.cosypose.cosypose.training.train_pose import make_eval_bundle, run_eval, log
 
 cudnn.benchmark = True
 logger = get_logger(__name__)
@@ -525,4 +525,3 @@ def train_pose(args):
         print("waiting on barrier")
         dist.barrier()
 
-            

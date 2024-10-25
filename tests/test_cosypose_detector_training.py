@@ -1,32 +1,30 @@
 import os
-import numpy as np
-import pytest 
 
+import numpy as np
+import pytest
 from omegaconf import OmegaConf
 
 from happypose.pose_estimators.cosypose.cosypose.utils.distributed import (
-    get_rank,
     get_world_size,
     init_distributed_mode,
     reduce_dict,
     sync_model,
 )
-
-from happypose.toolbox.utils.logging import get_logger, set_logging_level
+from happypose.toolbox.utils.logging import get_logger
 
 logger = get_logger(__name__)
 
 class TestCosyposeDetectorTraining():
-    
+
     @pytest.fixture(autouse=True)
     def setup(self):
 
         args = {
             'config':'bop-ycbv-synt+real'
         }
-        
+
         cfg_detector = OmegaConf.create({})
-        
+
         logger.info(
             f"Training with config: {args['config']}",
         )
@@ -120,20 +118,18 @@ class TestCosyposeDetectorTraining():
         N_GPUS = int(os.environ.get("N_PROCS", 1))
         cfg_detector.epoch_size = cfg_detector.epoch_size // N_GPUS
         self.cfg_detector = cfg_detector
-    
+
     def test_detector_training(self):
         if torch.cuda.is_available():
             train_detector(self.cfg_detector)
         else:
             pytest.skip("Training is not tested without GPU")
-        
+
 
 import functools
 import time
 from collections import defaultdict
 
-import numpy as np
-import simplejson as json
 import torch
 import torch.distributed as dist
 import yaml
@@ -147,18 +143,17 @@ from happypose.pose_estimators.cosypose.cosypose.config import EXP_DIR
 from happypose.pose_estimators.cosypose.cosypose.datasets.detection_dataset import (
     DetectionDataset,
 )
-from happypose.pose_estimators.cosypose.cosypose.integrated.detector import Detector
 
 # Evaluation
-from happypose.pose_estimators.cosypose.cosypose.scripts.run_detection_eval import (
-    run_detection_eval,
+from happypose.pose_estimators.cosypose.cosypose.training.detector_models_cfg import (
+    check_update_config,
+    create_model_detector,
 )
-from happypose.pose_estimators.cosypose.cosypose.utils.distributed import (
-    get_rank,
-    get_world_size,
-    init_distributed_mode,
-    reduce_dict,
-    sync_model,
+from happypose.pose_estimators.cosypose.cosypose.training.maskrcnn_forward_loss import (
+    h_maskrcnn,
+)
+from happypose.pose_estimators.cosypose.cosypose.training.train_detector import (
+    collate_fn,
 )
 from happypose.pose_estimators.cosypose.cosypose.utils.logging import get_logger
 from happypose.toolbox.datasets.datasets_cfg import make_scene_dataset
@@ -171,11 +166,6 @@ from happypose.toolbox.utils.resources import (
     get_gpu_memory,
     get_total_memory,
 )
-
-from happypose.pose_estimators.cosypose.cosypose.training.detector_models_cfg import check_update_config, create_model_detector
-from happypose.pose_estimators.cosypose.cosypose.training.maskrcnn_forward_loss import h_maskrcnn
-
-from happypose.pose_estimators.cosypose.cosypose.training.train_detector import collate_fn
 
 cudnn.benchmark = True
 logger = get_logger(__name__)

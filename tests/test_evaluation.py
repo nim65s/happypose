@@ -1,43 +1,36 @@
 import os
-import pytest
 from pathlib import Path
 
 # Standard Library
-import os
 from typing import Dict
+
+import pytest
+import torch
 
 # Third Party
 from omegaconf import OmegaConf
-import torch
 
 from happypose.pose_estimators.megapose.config import (
+    LOCAL_DATA_DIR,
     RESULTS_DIR,
 )
-from happypose.toolbox.utils.distributed import (
-    get_rank,
-)
-from happypose.pose_estimators.megapose.scripts.run_full_megapose_eval import (
-    create_eval_cfg
-)
+from happypose.pose_estimators.megapose.evaluation.bop import run_evaluation
 from happypose.pose_estimators.megapose.evaluation.eval_config import (
     BOPEvalConfig,
     EvalConfig,
     FullEvalConfig,
     HardwareConfig,
 )
-
-from happypose.pose_estimators.megapose.config import (
-    LOCAL_DATA_DIR,
-)
-
 from happypose.pose_estimators.megapose.evaluation.evaluation import (
     get_save_dir,
 )
-from happypose.pose_estimators.cosypose.cosypose.evaluation.evaluation import run_eval
-
-from happypose.pose_estimators.megapose.evaluation.bop import run_evaluation
-
-from happypose.toolbox.utils.logging import get_logger, set_logging_level
+from happypose.pose_estimators.megapose.scripts.run_full_megapose_eval import (
+    create_eval_cfg,
+)
+from happypose.toolbox.utils.distributed import (
+    get_rank,
+)
+from happypose.toolbox.utils.logging import get_logger
 
 logger = get_logger(__name__)
 
@@ -57,22 +50,22 @@ class TestCosyPoseEvaluation():
             "skip_inference":True,
             "run_bop_eval":True,
         }
-        
+
         conf = OmegaConf.create(configuration)
-        
+
         cfg: FullEvalConfig = OmegaConf.structured(FullEvalConfig)
 
         cfg.hardware = HardwareConfig(
             n_cpus=int(os.environ.get("N_CPUS", 10)),
             n_gpus=int(os.environ.get("WORLD_SIZE", 1)),
         )
-        
+
         cfg = OmegaConf.merge(cfg, conf)
-        
+
         cfg.save_dir = RESULTS_DIR / cfg.result_id
 
         self.cfg = cfg
-        
+
         # Iterate over each dataset
         for ds_name in self.cfg.ds_names:
             # create the EvalConfig objects that we will call `run_eval` on
@@ -85,11 +78,11 @@ class TestCosyPoseEvaluation():
                     ds_name,
                 )
                 eval_configs[name] = cfg_
-        
+
         self.eval_cfg = eval_configs
 
 
-    
+
     def test_config(self):
         assert self.eval_cfg is not None
         assert len(self.eval_cfg) == 1
@@ -126,7 +119,7 @@ class TestCosyPoseEvaluation():
         assert self.cfg['eval_coarse_also'] == False, "Error: eval_coarse_also is not correct"
         assert self.cfg['convert_only'] == False, "Error: convert_only is not correct"
 
-    
+
     # TODO
     # Rajouter un test pour save_dir ?
     # Modifier ensuite pour que le path soit un path temporaire ?
@@ -173,7 +166,7 @@ class TestCosyPoseEvaluation():
 
             assert bop_eval_cfg.results_path == eval_out["results_path"]
             assert bop_eval_cfg.dataset == 'ycbv.bop19'
-            
+
             if get_rank() == 0:
                 if self.cfg.run_bop_eval:
                     for bop_eval_cfg in bop_eval_cfgs:
@@ -184,7 +177,7 @@ class TestCosyPoseEvaluation():
             logger.info(f"Process {get_rank()} reached end of script")
         else:
             pytest.skip("Evaluation is not tested without GPU")
-        
+
     # TODO : Run the inference, then use the results for evaluation
     """
     # The inference shouldn't be tested in this function?

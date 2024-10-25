@@ -17,3 +17,4 @@ dependencies:
   - torchtnt
   - pip:
     - torchnet
+    - numpy<2

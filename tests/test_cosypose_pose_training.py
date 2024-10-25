@@ -51,8 +51,6 @@ from happypose.toolbox.utils.resources import (
 )
 
 cudnn.benchmark = True
-
-
 logger = get_logger(__name__)
 
 

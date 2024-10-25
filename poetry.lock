@@ -2259,23 +2259,24 @@ testing-docutils = ["pygments", "pytest (>=7,<8)", "pytest-param-files (>=0.3.4,
 
 [[package]]
 name = "nbformat"
-version = "5.7.0"
+version = "5.10.4"
 description = "The Jupyter Notebook format"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "nbformat-5.7.0-py3-none-any.whl", hash = "sha256:1b05ec2c552c2f1adc745f4eddce1eac8ca9ffd59bb9fd859e827eaa031319f9"},
-    {file = "nbformat-5.7.0.tar.gz", hash = "sha256:1d4760c15c1a04269ef5caf375be8b98dd2f696e5eb9e603ec2bf091f9b0d3f3"},
+    {file = "nbformat-5.10.4-py3-none-any.whl", hash = "sha256:3b48d6c8fbca4b299bf3982ea7db1af21580e4fec269ad087b9e81588891200b"},
+    {file = "nbformat-5.10.4.tar.gz", hash = "sha256:322168b14f937a5d11362988ecac2a4952d3d8e3a2cbeb2319584631226d5b3a"},
 ]
 
 [package.dependencies]
-fastjsonschema = "*"
+fastjsonschema = ">=2.15"
 jsonschema = ">=2.6"
-jupyter-core = "*"
+jupyter-core = ">=4.12,<5.0.dev0 || >=5.1.dev0"
 traitlets = ">=5.1"
 
 [package.extras]
-test = ["check-manifest", "pep440", "pre-commit", "pytest", "testpath"]
+docs = ["myst-parser", "pydata-sphinx-theme", "sphinx", "sphinxcontrib-github-alt", "sphinxcontrib-spelling"]
+test = ["pep440", "pre-commit", "pytest", "testpath"]
 
 [[package]]
 name = "nest-asyncio"
@@ -2523,39 +2524,37 @@ PyYAML = ">=5.1.0"
 
 [[package]]
 name = "open3d"
-version = "0.17.0"
+version = "0.18.0"
 description = "Open3D: A Modern Library for 3D Data Processing."
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.8"
 files = [
-    {file = "open3d-0.17.0-1fix6008-cp310-cp310-macosx_12_0_arm64.whl", hash = "sha256:428dad435f74d143e6d0526d030c9737fc01fe981bf9c5e1d4daa436807984e1"},
-    {file = "open3d-0.17.0-1fix6008-cp38-cp38-macosx_12_0_arm64.whl", hash = "sha256:88671846d8a2c699786a0f4312aa47abc916d6c76fb815e0752f6c65970a6668"},
-    {file = "open3d-0.17.0-1fix6008-cp39-cp39-macosx_12_0_arm64.whl", hash = "sha256:20cd8ed07f1364fe54b15e993d011e70cff85959de7157017f7bc2b139788a89"},
-    {file = "open3d-0.17.0-cp310-cp310-macosx_11_0_x86_64.whl", hash = "sha256:1847d72bfb2d037a84e54c466d227f7374c59e9eb2ebe8ac728b0b9605062dc4"},
-    {file = "open3d-0.17.0-cp310-cp310-macosx_13_0_arm64.whl", hash = "sha256:cf7aac7eda4c922867c4dd9b1641b10d3d0b1494879251ed17b3118f9df140f2"},
-    {file = "open3d-0.17.0-cp310-cp310-manylinux_2_27_aarch64.whl", hash = "sha256:e28e515f4850380ab4f25842bce5f3d4c63b5565f9f8d2df141059b62250ff9e"},
-    {file = "open3d-0.17.0-cp310-cp310-manylinux_2_27_x86_64.whl", hash = "sha256:3dc300697320bb688246c5d09f681045815c33222568573f1964b2d756431657"},
-    {file = "open3d-0.17.0-cp310-cp310-win_amd64.whl", hash = "sha256:114caef89b04168e635f38edd509208023390b241ea4a50fd47b52e9f69b8a76"},
-    {file = "open3d-0.17.0-cp37-cp37m-macosx_10_15_x86_64.whl", hash = "sha256:57e3dfe8800bc4c53a75998969bc271423676ffe518d5e1a37dc4b69dc201d06"},
-    {file = "open3d-0.17.0-cp37-cp37m-manylinux_2_27_aarch64.whl", hash = "sha256:c5dca18602ca92f2c0d53023f17159b38abdbb16ae3eecb858299118aaa88099"},
-    {file = "open3d-0.17.0-cp37-cp37m-manylinux_2_27_x86_64.whl", hash = "sha256:454b693c3af7b03839e76bf3abd7a15df1454bf2c2753bbc58934f9d44d1f8db"},
-    {file = "open3d-0.17.0-cp37-cp37m-win_amd64.whl", hash = "sha256:ec7d7c0bc33040bf700a36d26fdca5d1f0aad11b376f859712165a8cb91fa6c5"},
-    {file = "open3d-0.17.0-cp38-cp38-macosx_10_15_x86_64.whl", hash = "sha256:1200d7549dcc0957276b5ea7d9aafc593339638e2c84b97433a20832bf4f0b72"},
-    {file = "open3d-0.17.0-cp38-cp38-macosx_12_0_arm64.whl", hash = "sha256:843b01743cebd8bb8b66a1e1d471e8c834ed494817d092874a9f2914c94ab6cc"},
-    {file = "open3d-0.17.0-cp38-cp38-manylinux_2_27_aarch64.whl", hash = "sha256:6182f52c8313885d0e4ba3dfafbb4be255bc7a7881e0ae27917cd12a0ce89442"},
-    {file = "open3d-0.17.0-cp38-cp38-manylinux_2_27_x86_64.whl", hash = "sha256:50f0b476a41276cc315ac3871806cc192a33e6a3635b12f8e1d3f00ab18a4656"},
-    {file = "open3d-0.17.0-cp38-cp38-win_amd64.whl", hash = "sha256:01257c73fc8b6257b0e2413c0707d569f356efc3ceb9b9764b55cac47f614563"},
-    {file = "open3d-0.17.0-cp39-cp39-macosx_11_0_x86_64.whl", hash = "sha256:9010a9b23efd309535472bbb1428fb565ec2d0aaa0767d9f99a878edc9061280"},
-    {file = "open3d-0.17.0-cp39-cp39-macosx_12_0_arm64.whl", hash = "sha256:73c1f7e44e6254c5211fb0b5a315c353c3aaca16cb7eda4e2526ded1e6e41cd8"},
-    {file = "open3d-0.17.0-cp39-cp39-manylinux_2_27_aarch64.whl", hash = "sha256:60ad0ec46e27366fcc48260767790aea6dc398b12f690910c728c1367064470c"},
-    {file = "open3d-0.17.0-cp39-cp39-manylinux_2_27_x86_64.whl", hash = "sha256:5ab9235a6b2a31396643e2f0cadc665738d433545738d80f85be3d3cfb2ecc12"},
-    {file = "open3d-0.17.0-cp39-cp39-win_amd64.whl", hash = "sha256:35ae11a287b71df6e0a723135e83402d08883e5e708ab2051b92447af025121c"},
+    {file = "open3d-0.18.0-cp310-cp310-macosx_11_0_x86_64.whl", hash = "sha256:48ee627a142a5453c4a2869b529310acb6f6b2507989cb9199c56e75796c575e"},
+    {file = "open3d-0.18.0-cp310-cp310-macosx_13_0_arm64.whl", hash = "sha256:9f3df5e8e8fe514b8285d05e43a4a3d57243d42d5c1dc9212adf8f18b6ab59b4"},
+    {file = "open3d-0.18.0-cp310-cp310-manylinux_2_27_aarch64.whl", hash = "sha256:b9c8c8059cb92cd8b73c287385eeddf46195f2609ac7052302d6ac844a373dbf"},
+    {file = "open3d-0.18.0-cp310-cp310-manylinux_2_27_x86_64.whl", hash = "sha256:f649d5d58090f73a337895fb0022c7b05c00f47f704b5722b103cceba04cc870"},
+    {file = "open3d-0.18.0-cp310-cp310-win_amd64.whl", hash = "sha256:48cdf2af3051320140d198f5d3ea3a85eeb3355e7a989a835b611b16589b9646"},
+    {file = "open3d-0.18.0-cp311-cp311-macosx_10_15_universal2.whl", hash = "sha256:b35a68b9fef3e963266db3bb15fbfef20e05787bc61192f61725fde5215f3560"},
+    {file = "open3d-0.18.0-cp311-cp311-macosx_13_0_arm64.whl", hash = "sha256:2182b818dcd3290dd2ddb0021ad0453bfda99098c931d5b2fc636a341cb3ca70"},
+    {file = "open3d-0.18.0-cp311-cp311-manylinux_2_27_aarch64.whl", hash = "sha256:882f1e5039a3c1c5ec05183eb650537fd7431238b7ccb2b742ca5479f02f705b"},
+    {file = "open3d-0.18.0-cp311-cp311-manylinux_2_27_x86_64.whl", hash = "sha256:8e3d1d1900a8f4d956f6819c246c78081725b9b0888f8549d2a7a49c8daa1303"},
+    {file = "open3d-0.18.0-cp311-cp311-win_amd64.whl", hash = "sha256:2da5da6c9eb9227baee6fe98baa992233aca36b83ec9e7d4093c77e762db60e6"},
+    {file = "open3d-0.18.0-cp38-cp38-macosx_11_0_x86_64.whl", hash = "sha256:877e67237f2a97f8219870108eecf1ff447a81b0fcf1d2eacea246c9619fc55c"},
+    {file = "open3d-0.18.0-cp38-cp38-macosx_13_0_arm64.whl", hash = "sha256:0ec03fcd48a939ec105896e0d02a9d006e8328c60491a0647b9a4fe5d9e4117d"},
+    {file = "open3d-0.18.0-cp38-cp38-manylinux_2_27_aarch64.whl", hash = "sha256:477ed692bafd0ed591676d78bcb898bb2b684dcaa2886befe29e1b19d38a7c6d"},
+    {file = "open3d-0.18.0-cp38-cp38-manylinux_2_27_x86_64.whl", hash = "sha256:46b9c1b900716771827b78006cfd18489b5327eabda8cd3d01e028b8173f4301"},
+    {file = "open3d-0.18.0-cp38-cp38-win_amd64.whl", hash = "sha256:d745affd0c7c765ed30ae9010abc4cfa80980b2c9f39a4f8678e8a9ef41ce089"},
+    {file = "open3d-0.18.0-cp39-cp39-macosx_11_0_x86_64.whl", hash = "sha256:cce30304dfde3b9c0fbfca21687cf0e5280bcbabe2920d2c804ab352bfe610a5"},
+    {file = "open3d-0.18.0-cp39-cp39-macosx_13_0_universal2.whl", hash = "sha256:ba5e07ca9a3ec6c70393bd2c5c707455a2e9c54209ccccca15ecf03834efd353"},
+    {file = "open3d-0.18.0-cp39-cp39-manylinux_2_27_aarch64.whl", hash = "sha256:23a3bf135c7e69d4116f54b1ff78f58846245b5e70640b291981cee9e49a53d7"},
+    {file = "open3d-0.18.0-cp39-cp39-manylinux_2_27_x86_64.whl", hash = "sha256:7d05fd6eedf75136cfbed24983da30bdfd08a6c4b1f968bf80ab84efc1fac861"},
+    {file = "open3d-0.18.0-cp39-cp39-win_amd64.whl", hash = "sha256:41be2d652f1b9feed9efb8775b29368ece0b4328ba6e90278486ff7643c6d480"},
 ]
 
 [package.dependencies]
 configargparse = "*"
 dash = ">=2.6.0"
-nbformat = "5.7.0"
+nbformat = ">=5.7.0"
 numpy = ">=1.18.0"
 werkzeug = ">=2.2.3"
 
@@ -4965,4 +4964,4 @@ pypi = ["opencv-contrib-python", "opencv-python", "pin", "torch", "torchnet", "t
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "36787e0c9caf1ea1e7039091e0ff5fdb0dc56f674ef2705b7232c33ed864fb27"
+content-hash = "cf342d0be88608b388481abf9e5f3f323766de899a6c126b3b1897c03de8e6ba"

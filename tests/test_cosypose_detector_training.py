@@ -54,10 +54,8 @@ logger = get_logger(__name__)
 
 
 class TestCosyposeDetectorTraining:
-
     @pytest.fixture(autouse=True)
     def setup(self):
-
         args = {"config": "bop-ycbv-synt+real"}
 
         cfg_detector = OmegaConf.create({})

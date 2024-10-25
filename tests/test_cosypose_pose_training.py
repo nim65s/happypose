@@ -57,10 +57,8 @@ logger = get_logger(__name__)
 
 
 class TestCosyposePoseTraining:
-
     @pytest.fixture(autouse=True)
     def setup(self):
-
         args = {"config": "ycbv-refiner-syntonly"}
 
         cfg_pose = OmegaConf.create({})

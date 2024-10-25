@@ -34,7 +34,6 @@ from happypose.pose_estimators.megapose.evaluation.runner_utils import format_re
 
 # Pose estimator
 from happypose.toolbox.datasets.datasets_cfg import make_object_dataset, make_scene_dataset, get_obj_ds_info
-from happypose.toolbox.inference.utils import load_detector
 from happypose.toolbox.lib3d.rigid_mesh_database import MeshDataBase
 from happypose.toolbox.utils.distributed import get_rank, get_tmp_dir
 from happypose.toolbox.utils.logging import get_logger
@@ -69,7 +68,7 @@ def load_detector(run_id, ds_name):
     return model
 
 
-def load_pose_models(object_dataset, coarse_run_id, refiner_run_id, n_workers, renderer_type="panda3d"):
+def load_pose_models_cosypose(object_dataset, coarse_run_id, refiner_run_id, n_workers, renderer_type="panda3d"):
     run_dir = EXP_DIR / coarse_run_id
     cfg = yaml.load((run_dir / "config.yaml").read_text(), Loader=yaml.UnsafeLoader)
     cfg = check_update_config_pose(cfg)
@@ -161,6 +160,8 @@ def run_eval(
     cfg.save_dir = str(save_dir)
 
     logger.info(f"Running eval on ds_name={cfg.ds_name} with setting={save_key}")
+    # e.g. "ycbv.bop19" -> "ycbv"
+    ds_name_short = cfg.ds_name.split('.')[0]
 
     # Load the dataset
     ds_kwargs = {"load_depth": False}
@@ -181,8 +182,7 @@ def run_eval(
     # Load detector model
     if cfg.inference.detection_type == "detector":
         assert cfg.detector_run_id is not None
-        detector_model = load_detector(cfg.detector_run_id, cfg.ds_name)
-        # detector_model = load_detector(cfg.detector_run_id, device=device)
+        detector_model = load_detector(cfg.detector_run_id, ds_name_short)
     elif cfg.inference.detection_type == "gt":
         detector_model = None
     else:
@@ -195,14 +195,15 @@ def run_eval(
     assert cfg.coarse_run_id is not None
     assert cfg.refiner_run_id is not None
 
-    object_ds = make_object_dataset('ycbv')
 
-    coarse_model, refiner_model, mesh_db = load_pose_models(
+    object_ds = make_object_dataset(ds_name_short)
+
+    coarse_model, refiner_model, mesh_db = load_pose_models_cosypose(
         object_ds,
         coarse_run_id=cfg.coarse_run_id,
         refiner_run_id=cfg.refiner_run_id,
-        n_workers=0,
-        renderer_type="bullet"
+        n_workers=cfg.inference.n_workers,
+        renderer_type=cfg.inference.renderer
     )
 
     renderer = refiner_model.renderer

@@ -133,13 +133,16 @@ class Panda3dBatchRenderer:
         preload_cache: bool = True,
         split_objects: bool = False,
     ):
-        assert n_workers >= 1
+        self._is_closed = False
         self._object_dataset = asset_dataset
         self._n_workers = n_workers
         self._split_objects = split_objects
+        self._renderers = []
+        self._in_queues = []
+        self._out_queue = None
+        assert n_workers >= 1
 
         self._init_renderers(preload_cache)
-        self._is_closed = False
 
     def make_scene_data(
         self,
@@ -340,7 +343,8 @@ class Panda3dBatchRenderer:
             renderer_process.terminate()
         for queue in self._in_queues:
             queue.close()
-        self._out_queue.close()
+        if self._out_queue is not None:
+            self._out_queue.close()
         self._is_closed = True
         logger.debug("Batch renderer is closed.")
 

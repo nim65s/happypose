@@ -14,7 +14,7 @@ limitations under the License.
 """
 
 # Standard Library
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import List, Optional
 
 # MegaPose
@@ -59,7 +59,7 @@ class EvalConfig:
     ds_name: str = "ycbv.bop19"
 
     # Inference
-    inference: InferenceConfig = InferenceConfig()  # noqa RUF009
+    inference: InferenceConfig = field(default_factory=InferenceConfig)
 
     # Run management
     result_id: Optional[str] = None
@@ -75,7 +75,7 @@ class EvalConfig:
 
     # Infos
     global_batch_size: Optional[int] = None
-    hardware: HardwareConfig = HardwareConfig()  # noqa RUF009
+    hardware: HardwareConfig = field(default_factory=HardwareConfig)
 
     # Debug
     debug: bool = False

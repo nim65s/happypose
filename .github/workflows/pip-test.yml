@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.9", "3.10"]
+        python-version: ["3.10", "3.11"]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -30,7 +30,7 @@ jobs:
         run: pip install -U pip
 
       - name: Install happypose
-        run: pip install ".[cpu,pypi]" --extra-index-url https://download.pytorch.org/whl/cpu
+        run: pip install ".[multiview,pypi]"
 
       - name: Download pre-trained models required for tests
         run: |
@@ -47,4 +47,4 @@ jobs:
       - name: Run tests
         run: |
           python -m unittest
-          pytest
+          pytest tests -v

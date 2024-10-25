@@ -17,9 +17,11 @@ username = getpass.getuser()
 PROJECT_ROOT = Path(happypose.__file__).parent.parent
 PROJECT_DIR = PROJECT_ROOT
 DATA_DIR = PROJECT_DIR / "data"
+# user should set "HAPPYPOSE_DATA_DIR" env or create project dir "local_data"
 LOCAL_DATA_DIR = Path(
     os.environ.get("HAPPYPOSE_DATA_DIR", Path(PROJECT_DIR) / "local_data"),
 )
+assert LOCAL_DATA_DIR.exists(), "Did you forget to set env variable 'HAPPYPOSE_DATA_DIR'?"
 TEST_DATA_DIR = LOCAL_DATA_DIR
 DASK_LOGS_DIR = LOCAL_DATA_DIR / "dasklogs"
 SYNT_DS_DIR = LOCAL_DATA_DIR / "synt_datasets"
@@ -36,7 +38,6 @@ DEBUG_DATA_DIR = LOCAL_DATA_DIR / "debug_data"
 DEPS_DIR = PROJECT_DIR / "deps"
 CACHE_DIR = LOCAL_DATA_DIR / "joblib_cache"
 
-assert LOCAL_DATA_DIR.exists()
 CACHE_DIR.mkdir(exist_ok=True)
 TEST_DATA_DIR.mkdir(exist_ok=True)
 DASK_LOGS_DIR.mkdir(exist_ok=True)

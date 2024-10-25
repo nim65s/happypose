@@ -13,7 +13,6 @@ from happypose.pose_estimators.cosypose.cosypose.evaluation.evaluation import ru
 from happypose.pose_estimators.megapose.bop_config import PBR_DETECTORS, SYNT_REAL_DETECTORS
 from happypose.pose_estimators.megapose.config import (
     DEBUG_RESULTS_DIR,
-    MODELNET_TEST_CATEGORIES,
     RESULTS_DIR,
 )
 from happypose.pose_estimators.megapose.evaluation.bop import run_evaluation
@@ -36,18 +35,6 @@ from happypose.toolbox.utils.logging import get_logger, set_logging_level
 
 logger = get_logger(__name__)
 
-BOP_DATASET_NAMES = [
-    "lm",
-    "lmo",
-    "tless",
-    "tudl",
-    "icbin",
-    "itodd",
-    "hb",
-    "ycbv",
-    # 'hope',
-]
-
 BOP_TEST_DATASETS = [
     "lmo.bop19",
     "tless.bop19",
@@ -56,11 +43,6 @@ BOP_TEST_DATASETS = [
     "itodd.bop19",
     "hb.bop19",
     "ycbv.bop19",
-]
-
-
-MODELNET_TEST_DATASETS = [
-    f"modelnet.{category}.test" for category in MODELNET_TEST_CATEGORIES
 ]
 
 

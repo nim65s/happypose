@@ -18,11 +18,26 @@ from typing import Tuple
 
 # Third Party
 import numpy as np
+import numpy.typing as npt
 import torch
 import transforms3d
 
 # Local Folder
 from happypose.toolbox.lib3d.rotations import compute_rotation_matrix_from_ortho6d
+
+
+def transform_pts_np(T: npt.NDArray, pts: npt.NDArray):
+    """Args:
+    ----
+        T (torch.Tensor): (4, 4), homogeneous matrix representing a SE(3) transformation
+        pts (torch.Tensor): (n_pts, 3), 3D points to be transformed by T
+
+    Returns
+    -------
+        npt.NDArray: (n_pts, 3)
+    """
+
+    return (T[:3, :3] @ pts.T + T[:3, 3].reshape((3, 1))).T
 
 
 def transform_pts(T: torch.Tensor, pts: torch.Tensor) -> torch.Tensor:

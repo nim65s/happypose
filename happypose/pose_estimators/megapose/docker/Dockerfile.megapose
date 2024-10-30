@@ -56,7 +56,7 @@ RUN source $CONDA_DIR/bin/activate && \
   pip install selenium omegaconf simplejson line_profiler opencv-python \
   torchnet tqdm lxml transforms3d panda3d joblib xarray pandas xarray matplotlib \
   bokeh plyfile trimesh wget ipdb panda3d-gltf colorama pyyaml ipykernel \
-  scipy pypng h5py seaborn kornia meshcat pyarrow dt_apriltags open3d structlog \
+  scipy pypng h5py seaborn kornia meshcat pyarrow dt_apriltags structlog \
   imageio
 
 # Blender
@@ -132,7 +132,6 @@ RUN apt-get install -y tmux
 # Install TEASER++
 RUN apt install -y cmake libeigen3-dev libboost-all-dev \
   && source $CONDA_DIR/bin/activate \
-  && pip install open3d \
   && mkdir /build && cd /build && git clone https://github.com/MIT-SPARK/TEASER-plusplus.git \
   && cd TEASER-plusplus && mkdir build && cd build \
   && cmake -DTEASERPP_PYTHON_VERSION=3.9 .. && make teaserpp_python \

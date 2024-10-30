@@ -27,10 +27,10 @@ import torch
 from happypose.pose_estimators.megapose.inference.depth_refiner import DepthRefiner
 from happypose.pose_estimators.megapose.inference.refiner_utils import (
     compute_masks,
-    numpy_to_open3d,
 )
 from happypose.pose_estimators.megapose.inference.types import PoseEstimatesType
 from happypose.toolbox.lib3d.rigid_mesh_database import BatchedMeshes
+from happypose.toolbox.lib3d.transform_ops import transform_pts_np
 from happypose.toolbox.renderer.panda3d_batch_renderer import Panda3dBatchRenderer
 from happypose.toolbox.renderer.types import Panda3dLightData
 from happypose.toolbox.visualization.meshcat_utils import get_pointcloud
@@ -137,16 +137,11 @@ def compute_teaserpp_refinement(
 
     solution = solver.getSolution()
 
-    T = np.eye(4)
-    T[:3, :3] = solution.rotation
-    T[:3, 3] = solution.translation
-    T_tgt_src = T
+    T_tgt_src = np.eye(4)
+    T_tgt_src[:3, :3] = solution.rotation
+    T_tgt_src[:3, 3] = solution.translation
 
-    # check number of inliers
-    pc_src_o3d = numpy_to_open3d(pc_src)
-    pc_src_o3d_refined = pc_src_o3d.transform(T_tgt_src)
-    pc_src_refined = np.array(pc_src_o3d_refined.points)
-
+    pc_src_refined = transform_pts_np(T_tgt_src, pc_src)
     diff = np.linalg.norm(pc_src_refined - pc_tgt, axis=-1)
     inliers = np.count_nonzero(diff < solver_params.noise_bound)
 
@@ -158,8 +153,8 @@ def compute_teaserpp_refinement(
         "pc_tgt": pc_tgt,
         "pc_src_mask": pc_src_mask,
         "pc_tgt_mask": pc_tgt_mask,
-        "T": T,
-        "T_tgt_src": T,  # transform that aligns src to tgt
+        "T": T_tgt_src,
+        "T_tgt_src": T_tgt_src,  # transform that aligns src to tgt
         "num_inliers": inliers,
     }
 

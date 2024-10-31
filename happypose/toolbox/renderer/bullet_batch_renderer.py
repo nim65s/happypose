@@ -210,7 +210,7 @@ class BulletBatchRenderer:
             for n in range(self.n_workers):
                 plotter = multiprocessing.Process(
                     target=worker_loop,
-                    render_args={
+                    kwargs={
                         "worker_id": n,
                         "in_queue": self.in_queue,
                         "out_queue": self._out_queue,

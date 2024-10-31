@@ -22,7 +22,7 @@ class TestBulletRenderer:
 
     @pytest.fixture(autouse=True)
     def setUp(self) -> None:
-        self.obj_label = "my_favorite_object_label"
+        self.obj_label = "ycbv-obj_000001"  # HACK: why do we need to precise ycbv here?
         self.obj_path = Path(__file__).parent.joinpath("data/obj_000001.ply")
         self.rigid_object_dataset = RigidObjectDataset(
             objects=[

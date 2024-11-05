@@ -12,8 +12,15 @@ from happypose.pose_estimators.cosypose.cosypose.config import EXP_DIR
 from happypose.pose_estimators.cosypose.cosypose.evaluation.prediction_runner import (
     PredictionRunner,
 )
+from happypose.pose_estimators.cosypose.cosypose.integrated.detector import Detector
 from happypose.pose_estimators.cosypose.cosypose.integrated.pose_estimator import (
     PoseEstimator,
+)
+from happypose.pose_estimators.cosypose.cosypose.training.detector_models_cfg import (
+    check_update_config as check_update_config_detector,
+)
+from happypose.pose_estimators.cosypose.cosypose.training.detector_models_cfg import (
+    create_model_detector,
 )
 
 # Detection
@@ -42,19 +49,9 @@ from happypose.toolbox.lib3d.rigid_mesh_database import MeshDataBase
 from happypose.toolbox.utils.distributed import get_rank, get_tmp_dir
 from happypose.toolbox.utils.logging import get_logger
 
-# """" Temporary imports
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 logger = get_logger(__name__)
-
-from happypose.pose_estimators.cosypose.cosypose.integrated.detector import Detector
-from happypose.pose_estimators.cosypose.cosypose.training.detector_models_cfg import (
-    check_update_config as check_update_config_detector,
-)
-from happypose.pose_estimators.cosypose.cosypose.training.detector_models_cfg import (
-    create_model_detector,
-)
 
 
 def load_detector(run_id, ds_name):

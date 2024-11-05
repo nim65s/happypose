@@ -210,7 +210,7 @@ class BOPDataset(SceneDataset):
         use_raw_object_id: bool = False,
         allow_cache: bool = False,
         per_view_annotations: bool = False,
-        models_dir: str = "models"
+        models_dir: str = "models",
     ):
         assert ds_dir.exists(), "Dataset does not exists."
         self.ds_dir = ds_dir
@@ -247,7 +247,9 @@ class BOPDataset(SceneDataset):
             load_segmentation=True,
         )
         models_path = ds_dir / models_dir
-        assert models_path.exists(), f"models_dir={models_dir} might not be the correct object model dir name"
+        assert (
+            models_path.exists()
+        ), f"models_dir={models_dir} might not be the correct object model dir name"
         models_infos = json.loads((models_path / "models_info.json").read_text())
         self.all_labels = [f"obj_{int(obj_id):06d}" for obj_id in models_infos.keys()]
 

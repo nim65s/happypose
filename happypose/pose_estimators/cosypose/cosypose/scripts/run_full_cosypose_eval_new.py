@@ -10,7 +10,10 @@ from omegaconf import OmegaConf
 from happypose.pose_estimators.cosypose.cosypose.evaluation.evaluation import run_eval
 
 # MegaPose
-from happypose.pose_estimators.megapose.bop_config import PBR_DETECTORS, SYNT_REAL_DETECTORS
+from happypose.pose_estimators.megapose.bop_config import (
+    PBR_DETECTORS,
+    SYNT_REAL_DETECTORS,
+)
 from happypose.pose_estimators.megapose.config import (
     DEBUG_RESULTS_DIR,
     RESULTS_DIR,

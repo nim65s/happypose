@@ -33,7 +33,11 @@ from happypose.pose_estimators.megapose.evaluation.meters.modelnet_meters import
 from happypose.pose_estimators.megapose.evaluation.runner_utils import format_results
 
 # Pose estimator
-from happypose.toolbox.datasets.datasets_cfg import make_object_dataset, make_scene_dataset, get_obj_ds_info
+from happypose.toolbox.datasets.datasets_cfg import (
+    get_obj_ds_info,
+    make_object_dataset,
+    make_scene_dataset,
+)
 from happypose.toolbox.lib3d.rigid_mesh_database import MeshDataBase
 from happypose.toolbox.utils.distributed import get_rank, get_tmp_dir
 from happypose.toolbox.utils.logging import get_logger
@@ -44,13 +48,14 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 logger = get_logger(__name__)
 
+from happypose.pose_estimators.cosypose.cosypose.integrated.detector import Detector
 from happypose.pose_estimators.cosypose.cosypose.training.detector_models_cfg import (
     check_update_config as check_update_config_detector,
 )
 from happypose.pose_estimators.cosypose.cosypose.training.detector_models_cfg import (
     create_model_detector,
 )
-from happypose.pose_estimators.cosypose.cosypose.integrated.detector import Detector
+
 
 def load_detector(run_id, ds_name):
     run_dir = EXP_DIR / run_id
@@ -68,7 +73,9 @@ def load_detector(run_id, ds_name):
     return model
 
 
-def load_pose_models_cosypose(object_dataset, coarse_run_id, refiner_run_id, n_workers, renderer_type="panda3d"):
+def load_pose_models_cosypose(
+    object_dataset, coarse_run_id, refiner_run_id, n_workers, renderer_type="panda3d"
+):
     run_dir = EXP_DIR / coarse_run_id
     cfg = yaml.load((run_dir / "config.yaml").read_text(), Loader=yaml.UnsafeLoader)
     cfg = check_update_config_pose(cfg)
@@ -161,7 +168,7 @@ def run_eval(
 
     logger.info(f"Running eval on ds_name={cfg.ds_name} with setting={save_key}")
     # e.g. "ycbv.bop19" -> "ycbv"
-    ds_name_short = cfg.ds_name.split('.')[0]
+    ds_name_short = cfg.ds_name.split(".")[0]
 
     # Load the dataset
     ds_kwargs = {"load_depth": False}
@@ -195,7 +202,6 @@ def run_eval(
     assert cfg.coarse_run_id is not None
     assert cfg.refiner_run_id is not None
 
-
     object_ds = make_object_dataset(ds_name_short)
 
     coarse_model, refiner_model, mesh_db = load_pose_models_cosypose(
@@ -203,7 +209,7 @@ def run_eval(
         coarse_run_id=cfg.coarse_run_id,
         refiner_run_id=cfg.refiner_run_id,
         n_workers=cfg.inference.n_workers,
-        renderer_type=cfg.inference.renderer
+        renderer_type=cfg.inference.renderer,
     )
 
     renderer = refiner_model.renderer

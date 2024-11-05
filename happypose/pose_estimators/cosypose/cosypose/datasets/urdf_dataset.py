@@ -1,18 +1,24 @@
+import json
 from pathlib import Path
 
 import pandas as pd
 
 
 class UrdfDataset:
-    def __init__(self, urdf_ds_dir):
+    def __init__(self, urdf_ds_dir, objname2label_file_name="objname2label.json"):
         urdf_ds_dir = Path(urdf_ds_dir)
+        with open(urdf_ds_dir / objname2label_file_name, "r") as f:
+            objname2label = json.load(f)
         index = []
         for obj_dir in urdf_ds_dir.iterdir():
             urdf_paths = list(obj_dir.glob("*.urdf"))
             if len(urdf_paths) == 1:
                 urdf_path = urdf_paths[0]
-                # HACK for ycbv
-                label = 'ycbv-'+obj_dir.name
+                obj_name = obj_dir.name
+                if objname2label is None:
+                    label = obj_name
+                else:
+                    label = objname2label[obj_name]
                 infos = {
                     "label": label,
                     "urdf_path": urdf_path.as_posix(),

@@ -435,6 +435,9 @@ def make_object_dataset(ds_name: str) -> RigidObjectDataset:
 
 
 def make_urdf_dataset(ds_name: str) -> RigidObjectDataset:
+    """
+    TODO: not used?
+    """
     # BOP
     if ds_name == "tless.cad":
         ds = UrdfDataset(

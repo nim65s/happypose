@@ -185,6 +185,20 @@ class BOPDataset(SceneDataset):
 
     # TODO: Document whats happening with the per-view annotations.
     # TODO: Remove per-view annotations, recommend using WebDataset for performance ?
+
+    Args:
+    ----
+        ds_dir (Path): path to the BOP dataset directory
+        label_format (str): format of the object label, e.g. "ycbv-{label}"
+        split (str): split of the dataset to use, e.g. "test",
+        load_depth (bool): when loading an observation, load also the depth image
+        use_raw_object_id (bool): if True, object id is {label}, otherwise obj_{label} (e.g. "000021" vs "obj_000021")
+        allow_cache (bool): _description_,
+        per_view_annotations (bool): _description_,
+        models_dir (str): name of the object directory in bop dataset directory (e.g. "models", "models_eval", "models_cad"...)
+    Returns:
+    -------
+        List[SceneData]: _description_
     """
 
     def __init__(
@@ -196,9 +210,10 @@ class BOPDataset(SceneDataset):
         use_raw_object_id: bool = False,
         allow_cache: bool = False,
         per_view_annotations: bool = False,
+        models_dir: str = "models"
     ):
-        self.ds_dir = ds_dir
         assert ds_dir.exists(), "Dataset does not exists."
+        self.ds_dir = ds_dir
 
         self.split = split
         self.base_dir = ds_dir / split
@@ -231,7 +246,9 @@ class BOPDataset(SceneDataset):
             load_depth=load_depth,
             load_segmentation=True,
         )
-        models_infos = json.loads((ds_dir / "models" / "models_info.json").read_text())
+        models_path = ds_dir / models_dir
+        assert models_path.exists(), f"models_dir={models_dir} might not be the correct object model dir name"
+        models_infos = json.loads((models_path / "models_info.json").read_text())
         self.all_labels = [f"obj_{int(obj_id):06d}" for obj_id in models_infos.keys()]
 
     def _load_scene_observation(

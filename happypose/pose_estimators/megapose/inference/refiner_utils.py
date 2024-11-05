@@ -15,13 +15,6 @@ limitations under the License.
 
 # Third Party
 import numpy as np
-import open3d as o3d
-
-
-def numpy_to_open3d(xyz):
-    pcd = o3d.geometry.PointCloud()
-    pcd.points = o3d.utility.Vector3dVector(xyz)
-    return pcd
 
 
 def compute_masks(mask_type, depth_rendered, depth_measured, depth_delta_thresh=0.1):

@@ -27,9 +27,13 @@ import happypose
 
 PROJECT_ROOT = Path(happypose.__file__).parent.parent
 PROJECT_DIR = PROJECT_ROOT
+# user should set "HAPPYPOSE_DATA_DIR" env or create project dir "local_data"
 LOCAL_DATA_DIR = Path(
     os.environ.get("HAPPYPOSE_DATA_DIR", Path(PROJECT_DIR) / "local_data"),
 )
+assert (
+    LOCAL_DATA_DIR.exists()
+), "Did you forget to set env variable 'HAPPYPOSE_DATA_DIR'?"
 BOP_DS_DIR = LOCAL_DATA_DIR / "bop_datasets"
 NB_DATA_DIR = LOCAL_DATA_DIR / "notebook_data"
 SHAPENET_DIR = LOCAL_DATA_DIR / "shapenetcorev2"

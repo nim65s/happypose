@@ -10,10 +10,12 @@ from omegaconf import OmegaConf
 from happypose.pose_estimators.cosypose.cosypose.evaluation.evaluation import run_eval
 
 # MegaPose
-from happypose.pose_estimators.megapose.bop_config import PBR_DETECTORS
+from happypose.pose_estimators.megapose.bop_config import (
+    PBR_DETECTORS,
+    SYNT_REAL_DETECTORS,
+)
 from happypose.pose_estimators.megapose.config import (
     DEBUG_RESULTS_DIR,
-    MODELNET_TEST_CATEGORIES,
     RESULTS_DIR,
 )
 from happypose.pose_estimators.megapose.evaluation.bop import run_evaluation
@@ -36,18 +38,6 @@ from happypose.toolbox.utils.logging import get_logger, set_logging_level
 
 logger = get_logger(__name__)
 
-BOP_DATASET_NAMES = [
-    "lm",
-    "lmo",
-    "tless",
-    "tudl",
-    "icbin",
-    "itodd",
-    "hb",
-    "ycbv",
-    # 'hope',
-]
-
 BOP_TEST_DATASETS = [
     "lmo.bop19",
     "tless.bop19",
@@ -59,21 +49,14 @@ BOP_TEST_DATASETS = [
 ]
 
 
-MODELNET_TEST_DATASETS = [
-    f"modelnet.{category}.test" for category in MODELNET_TEST_CATEGORIES
-]
-
-
 def create_eval_cfg(
     cfg: EvalConfig,
     detection_type: str,
-    coarse_estimation_type: str,
     ds_name: str,
 ) -> Tuple[str, EvalConfig]:
     cfg = copy.deepcopy(cfg)
 
     cfg.inference.detection_type = detection_type
-    cfg.inference.coarse_estimation_type = coarse_estimation_type
     cfg.ds_name = ds_name
 
     if detection_type == "detector":
@@ -82,13 +65,15 @@ def create_eval_cfg(
         ds_name_root = cfg.ds_name.split(".")[0]
         if cfg.detector_run_id == "bop_pbr":
             cfg.detector_run_id = PBR_DETECTORS[ds_name_root]
+        elif cfg.detector_run_id == "bop_synt_real":
+            cfg.detector_run_id = SYNT_REAL_DETECTORS[ds_name_root]
     elif detection_type == "gt":
         pass
     else:
-        msg = f"Unknown detector type {cfg.detector_type}"
+        msg = f"Unknown detector type {detection_type}"
         raise ValueError(msg)
 
-    name = generate_save_key(detection_type, coarse_estimation_type)
+    name = generate_save_key(detection_type, "cosycoarse")
 
     return name, cfg
 
@@ -109,11 +94,10 @@ def run_full_eval(cfg: FullEvalConfig) -> None:
     for ds_name in cfg.ds_names:
         # create the EvalConfig objects that we will call `run_eval` on
         eval_configs: Dict[str, EvalConfig] = {}
-        for detection_type, coarse_estimation_type in cfg.detection_coarse_types:
+        for detection_type in cfg.detection_coarse_types:
             name, cfg_ = create_eval_cfg(
                 cfg,
                 detection_type,
-                coarse_estimation_type,
                 ds_name,
             )
             eval_configs[name] = cfg_

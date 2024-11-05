@@ -16,12 +16,12 @@ def convert_rigid_body_dataset_to_urdfs(
     urdf_dir: Path,
     texture_size=(1024, 1024),
     override=True,
-    label2objname_file_name: str = "objname2label.json",
+    objname2label_file_name: str = "objname2label.json",
 ):
     """
     Converts a RigidObjectDataset into a directory of urdf files with structure:
 
-    urdf_dir/<label2objname_file_name>.json
+    urdf_dir/<objname2label_file_name>.json
     urdf_dir/obj_000001/obj_000001.mtl
                         obj_000001.obj
                         obj_000001_texture.png
@@ -31,8 +31,20 @@ def convert_rigid_body_dataset_to_urdfs(
                         obj_000002_texture.png
                         obj_000002.urdf
 
-    <label2objname_file_name>.json: stores a map between object file names (e.g. obj_000002) and
+    <objname2label_file_name>.json: stores a map between object file names (e.g. obj_000002) and
     object labels used in happypose (e.g. the detector may output "ycbv-obj_000002")
+
+    Args:
+    ----
+        rb_ds (RigidObjectDataset):
+        urdf_dir (Path):
+        texture_size (tuple):
+        override (bool): override directory
+        objname2label_file_name (str):
+
+    Returns:
+    -------
+        List[SceneData]: _description_
     """
     if override and urdf_dir.exists():
         shutil.rmtree(urdf_dir, ignore_errors=True)
@@ -42,6 +54,7 @@ def convert_rigid_body_dataset_to_urdfs(
     for obj in tqdm(rb_ds.list_objects):
         objname = obj.mesh_path.with_suffix("").name  # e.g. "obj_000002"
         objname2label[objname] = obj.label  # e.g. obj_000002 -> ycbv-obj_000002
+        # import pdb; pdb.set_trace()
         # Create object folder
         obj_urdf_dir = urdf_dir / objname
         obj_urdf_dir.mkdir(exist_ok=True)  # urdf_dir/obj_000002/ created
@@ -55,7 +68,7 @@ def convert_rigid_body_dataset_to_urdfs(
         urdf_path = obj_path.with_suffix(".urdf")
         obj_to_urdf(obj_path, urdf_path)
 
-    with open(urdf_dir / label2objname_file_name, "w") as fp:
+    with open(urdf_dir / objname2label_file_name, "w") as fp:
         json.dump(objname2label, fp)
 
 

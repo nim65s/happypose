@@ -5,23 +5,20 @@ import pandas as pd
 
 
 class UrdfDataset:
-    def __init__(self, urdf_ds_dir, label_filename="objname2label.json"):
+    def __init__(self, urdf_ds_dir, objname2label_file_name="objname2label.json"):
         urdf_ds_dir = Path(urdf_ds_dir)
-        label_path = urdf_ds_dir / label_filename
-        if label_path.exists():
-            with label_path.open() as fp:
-                objname2label = json.load(fp)
-        else:
-            objname2label = None
+        with open(urdf_ds_dir / objname2label_file_name, "r") as f:
+            objname2label = json.load(f)
         index = []
         for obj_dir in urdf_ds_dir.iterdir():
             urdf_paths = list(obj_dir.glob("*.urdf"))
             if len(urdf_paths) == 1:
                 urdf_path = urdf_paths[0]
+                obj_name = obj_dir.name
                 if objname2label is None:
-                    label = obj_dir.name
+                    label = obj_name
                 else:
-                    label = objname2label[obj_dir.name]
+                    label = objname2label[obj_name]
                 infos = {
                     "label": label,
                     "urdf_path": urdf_path.as_posix(),

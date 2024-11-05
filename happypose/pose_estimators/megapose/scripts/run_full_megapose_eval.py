@@ -90,7 +90,7 @@ def create_eval_cfg(
     elif detection_type == "exte":
         pass
     else:
-        msg = f"Unknown detector type {cfg.detector_type}"
+        msg = f"Unknown detector type {detection_type}"
         raise ValueError(msg)
 
     name = generate_save_key(detection_type, coarse_estimation_type)

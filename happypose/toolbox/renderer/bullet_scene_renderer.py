@@ -4,13 +4,12 @@ import numpy as np
 import pybullet as pb
 
 from happypose.pose_estimators.cosypose.cosypose.config import LOCAL_DATA_DIR
-
-# from happypose.toolbox.datasets.datasets_cfg import UrdfDataset
 from happypose.pose_estimators.cosypose.cosypose.datasets.urdf_dataset import (
     OneUrdfDataset,
     UrdfDataset,
 )
 
+# from happypose.toolbox.datasets.urdf_dataset import UrdfDataset
 # TODO: move urdf utilities to happypose toolbox
 from happypose.pose_estimators.cosypose.cosypose.libmesh.urdf_utils import (
     convert_rigid_body_dataset_to_urdfs,
@@ -36,11 +35,12 @@ class BulletSceneRenderer(BaseScene):
             self.urdf_ds = asset_dataset
         elif isinstance(asset_dataset, RigidObjectDataset):
             # Build urdfs files from RigidObjectDataset
-            ds_name = "tmp"
-            urdf_dir = LOCAL_DATA_DIR / "urdfs" / ds_name
-            convert_rigid_body_dataset_to_urdfs(asset_dataset, urdf_dir)
-            self.urdf_ds = UrdfDataset(urdf_dir)
-            # TODO: BodyCache assumes unique scale for all objects (true for bop datasets)
+            urdf_dir = LOCAL_DATA_DIR / "urdfs" / "tmp"
+            convert_rigid_body_dataset_to_urdfs(
+                asset_dataset, urdf_dir, objname2label_file_name="objname2label.json"
+            )
+            self.urdf_ds = UrdfDataset(urdf_dir, "objname2label.json")
+            # BodyCache assumes unique scale for all objects (true for bop datasets)
             self.urdf_ds.index["scale"] = asset_dataset[0].scale
         else:
             raise TypeError(

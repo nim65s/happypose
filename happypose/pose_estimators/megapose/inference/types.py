@@ -88,7 +88,7 @@ def assert_detections_valid(detections: DetectionsType) -> None:
 @dataclass
 class InferenceConfig:
     # TODO: move detection_type outside of here
-    detection_type: str = "detector"  # ['detector', 'gt']
+    detection_type: str = "detector"  # ['detector', 'gt', 'exte']
     coarse_estimation_type: str = "SO3_grid"
     SO3_grid_size: int = 576
     n_refiner_iterations: int = 5
@@ -97,6 +97,8 @@ class InferenceConfig:
     depth_refiner: Optional[str] = None  # ['icp', 'teaserpp']
     bsz_objects: int = 16  # How many parallel refiners to run
     bsz_images: int = 288  # How many images to push through coarse model
+    renderer: str = "panda3d"  # ['panda3d', 'pybullet']
+    n_workers: int = 1  # How many workers to use in the batch renderer
 
 
 @dataclass

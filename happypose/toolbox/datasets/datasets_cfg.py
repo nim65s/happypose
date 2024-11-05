@@ -91,7 +91,12 @@ def make_scene_dataset(
         ds = keep_bop19(ds)
     elif ds_name == "tless.bop19":
         ds_dir = BOP_DS_DIR / "tless"
-        ds = BOPDataset(ds_dir, split="test_primesense", label_format="tless-{label}")
+        ds = BOPDataset(
+            ds_dir,
+            split="test_primesense",
+            label_format="tless-{label}",
+            models_dir="models_cad",
+        )
         ds = keep_bop19(ds)
     elif ds_name == "tudl.bop19":
         ds_dir = BOP_DS_DIR / "tudl"
@@ -435,6 +440,9 @@ def make_object_dataset(ds_name: str) -> RigidObjectDataset:
 
 
 def make_urdf_dataset(ds_name: str) -> RigidObjectDataset:
+    """
+    TODO: not used?
+    """
     # BOP
     if ds_name == "tless.cad":
         ds = UrdfDataset(

@@ -12,7 +12,7 @@ class UrdfDataset:
             if len(urdf_paths) == 1:
                 urdf_path = urdf_paths[0]
                 # HACK for ycbv
-                label = 'ycbv-'+obj_dir.name
+                label = "ycbv-" + obj_dir.name
                 infos = {
                     "label": label,
                     "urdf_path": urdf_path.as_posix(),

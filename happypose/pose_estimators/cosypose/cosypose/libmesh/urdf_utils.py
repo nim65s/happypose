@@ -36,10 +36,10 @@ def convert_rigid_body_dataset_to_urdfs(
 
     Args:
     ----
-        rb_ds (RigidObjectDataset): 
+        rb_ds (RigidObjectDataset):
         urdf_dir (Path):
-        texture_size (tuple): 
-        override (bool): override directory 
+        texture_size (tuple):
+        override (bool): override directory
         objname2label_file_name (str):
 
     Returns:

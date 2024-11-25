@@ -29,7 +29,7 @@ git clone --branch dev --recurse-submodules https://github.com/agimus-project/ha
 cd happypose
 conda env create -f environment.yml
 conda activate happypose
-pip install .
+pip install -r requirements/base.txt
 ```
 
 ### Example with uv
@@ -47,7 +47,7 @@ git clone --branch dev --recurse-submodules https://github.com/agimus-project/ha
 cd happypose
 python -m venv .venv
 source .venv/bin/activate
-pip install .[cpu,pypi]  # you *must* choose between cpu / cu124
+pip install -r requirements/pypi.txt -r requirements/cpu.txt  # you *must* choose between cpu / cu124
 ```
 
 ### Install extras:

@@ -30,7 +30,7 @@ jobs:
         run: pip install -U pip
 
       - name: Install happypose
-        run: pip install ".[cpu,pypi]"
+        run: pip install -r requirements/cpu.txt -r requirements/pypi.txt
 
       - name: Download pre-trained models required for tests
         run: |

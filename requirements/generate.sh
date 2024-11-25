@@ -14,3 +14,7 @@ uv export --no-hashes > "${SCRIPT_DIR}/base.txt"
 uv export --no-hashes --extra cpu > "${SCRIPT_DIR}/cpu.txt"
 uv export --no-hashes --extra cu124 > "${SCRIPT_DIR}/cu124.txt"
 uv export --no-hashes --extra pypi > "${SCRIPT_DIR}/pypi.txt"
+
+# TODO: uv should take care of that
+echo "--extra-index-url https://download.pytorch.org/whl/cpu" >> "${SCRIPT_DIR}/cpu.txt"
+echo "--extra-index-url https://download.pytorch.org/whl/cu124" >> "${SCRIPT_DIR}/cu124.txt"

@@ -7,7 +7,10 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 cd "${SCRIPT_DIR}/.."
 
-uv export > "${SCRIPT_DIR}/base.txt"
-uv export --extra cpu > "${SCRIPT_DIR}/cpu.txt"
-uv export --extra cu124 > "${SCRIPT_DIR}/cu124.txt"
-uv export --extra pypi > "${SCRIPT_DIR}/pypi.txt"
+# No hashes because:
+# ERROR: The editable requirement file:///home/runner/work/happypose/happypose (from -r requirements/cpu.txt (line 3)) cannot be installed when requiring hashes, because there is no single file to hash.
+
+uv export --no-hashes > "${SCRIPT_DIR}/base.txt"
+uv export --no-hashes --extra cpu > "${SCRIPT_DIR}/cpu.txt"
+uv export --no-hashes --extra cu124 > "${SCRIPT_DIR}/cu124.txt"
+uv export --no-hashes --extra pypi > "${SCRIPT_DIR}/pypi.txt"

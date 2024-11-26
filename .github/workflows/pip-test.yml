@@ -9,7 +9,7 @@ on:
     - dev
 
 jobs:
-  test:
+  pip:
     runs-on: ubuntu-latest
     strategy:
       matrix:

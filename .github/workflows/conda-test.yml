@@ -9,7 +9,7 @@ on:
     - dev
 
 jobs:
-  test:
+  conda:
     runs-on: ubuntu-latest
     defaults:
       run:

@@ -31,9 +31,6 @@ jobs:
         with:
           activate-environment: happypose
           python-version: ${{ matrix.python-version }}
-          miniforge-variant: Mambaforge
-          miniforge-version: latest
-          use-mamba: true
 
       - name: Get date for caching, reset cache every day
         id: get-date
@@ -54,7 +51,7 @@ jobs:
         id: cache
 
       - name: Update conda environment with happypose dependencies
-        run: mamba env update -n happypose -f environment.yml
+        run: conda env update -n happypose -f environment.yml
         if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Install happypose
